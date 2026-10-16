@@ -16,7 +16,7 @@ hudRow = mapH   ; HUD row to start under the map
 maxBalloons = 100
 maxTowers = 40
 maxPath = 256
-TickMS = 40     ; game tick rate (25 ticks/sec)
+tickMS = 40     ; game tick rate (25 ticks/sec)
 
 ; Game rules
 numRounds = 10
@@ -24,3 +24,12 @@ startMoney = 650
 startHeath = 50     
 sellValue = 70      ; refund percentage when selling tower (70% original value)
 roundBonus = 100    ; end of round money bonus
+
+; Structures
+Balloon STRUCT
+    ; to add
+Balloon ENDS
+
+Tower STRUCT
+    ; to add
+Tower ENDS
