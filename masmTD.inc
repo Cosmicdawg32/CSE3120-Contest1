@@ -25,6 +25,22 @@ startHeath = 50
 sellValue = 70      ; refund percentage when selling tower (70% original value)
 roundBonus = 100    ; end of round money bonus
 
+; map tiles
+tGrass = 0
+tPath = 1
+tTower = 2
+
+; balloon types
+bRed = 1
+bBlue = 2
+bYellow = 3
+bLead = 4
+
+; tower types
+tDart = 1
+tCannon = 2
+tSniper = 3
+
 ; Structures
 Balloon STRUCT
     ; to add
