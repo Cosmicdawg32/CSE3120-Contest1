@@ -2,7 +2,7 @@
 ; CSE3120 Contest 1
 ; Nicholas Bleeker
 
-INCUDE Irvine32.inc
+INCLUDE Irvine32.inc
 
 ; Map size
 mapW = 60   ; map width in tiles (each tile = 2 chars)

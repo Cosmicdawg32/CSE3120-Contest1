@@ -7,9 +7,9 @@ INCLUDE Irvine32.inc
 .data
 
 .code
-main PROC
 
-    exit
+BalloonInit PROC
+	ret
+BalloonInit ENDP
 
-main ENDP
-END main
+END
