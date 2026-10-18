@@ -45,7 +45,22 @@ balloonPointer PROC
 
 balloonPointer ENDP
 
+; Clear the balloon slot on startup and restart, so games can start with no balloons on the map
+
 BalloonInit PROC
+	
+	push ecx
+	push esi
+	mov esi, OFFSET BalloonsArr
+	mov ecx, maxBalloonCount * SIZEOF Balloon
+
+ClearLoop:
+
+	mov BYTE PTR [esi], 0
+	inc esi
+	loop ClearLoop
+	pop esi
+	pop ecx
 	ret
 
 BalloonInit ENDP
