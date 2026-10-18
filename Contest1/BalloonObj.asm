@@ -8,8 +8,9 @@ INCLUDE Irvine32.inc
 
 maxBalloonCount = 100
 balloonRed = 1
-balloonBlue = 2
-balloonGreen = 3
+balloonYellow = 2
+balloonBlue = 3
+balloonGreen = 4
 
 Balloon STRUCT
 	active BYTE ?
@@ -22,6 +23,8 @@ Balloon ENDS
 
 .data
 
+balloonSpeed BYTE 4, 3, 2, 1 ;Tickspeed setup, subject to change through testing goes in the order red yellow blue green
+balloonHealth BYTE 1, 2, 3, 4 ; Health setup, subject to change through testing follows the order of red yellow blue greeen
 .code
 
 BalloonInit PROC
