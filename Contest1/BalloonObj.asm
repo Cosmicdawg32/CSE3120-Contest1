@@ -13,6 +13,7 @@ balloonBlue = 3
 balloonGreen = 4
 
 Balloon STRUCT
+
 	active BYTE ?
 	balloonType BYTE ?
 	hp BYTE ?
@@ -25,7 +26,24 @@ Balloon ENDS
 
 balloonSpeed BYTE 4, 3, 2, 1 ;Tickspeed setup, subject to change through testing goes in the order red yellow blue green
 balloonHealth BYTE 1, 2, 3, 4 ; Health setup, subject to change through testing follows the order of red yellow blue greeen
+
+BalloonsArr Balloon maxBalloonCount DUP (<>)
+
 .code
+
+;Retrieve the index of the balloon and turn it into an address for the struct
+
+balloonPointer PROC
+
+	push eax
+	mov esi, OFFSET BalloonsArr
+	imul eax, SIZEOF Balloon
+
+	add esi, eax
+	pop eax
+	ret
+
+balloonPointer ENDP
 
 BalloonInit PROC
 	ret
