@@ -65,21 +65,31 @@ ClearLoop:
 
 BalloonInit ENDP
 
+;Places balloon at the start of the path
+
 SpawnBalloon PROC
 
 SpawnBalloon ENDP
+
+;Runs when a balloon is popped so it can be removed from the map
 
 popBalloon PROC
 
 popBalloon ENDP
 
+;Finds the current map tile a balloon could be on for computation
+
 findBalloon PROC
 
 findBalloon ENDP
 
+;Moves the balloon each tick according to the balloons speed.
+
 moveBalloon PROC
 
 moveBalloon ENDP
+
+;Computates the damage given to the balloon, decreaasing layers until there are non left and the balloon has to pop
 
 damageBalloon PROC
 
