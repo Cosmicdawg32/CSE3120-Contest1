@@ -69,6 +69,23 @@ BalloonInit ENDP
 
 SpawnBalloon PROC
 
+	push eax
+	push ebx
+	push ecx
+	push esi
+
+spawnLoopSearch:
+
+spawnLoopFound:
+
+spawnloopEND:
+
+	pop esi
+	pop ecx
+	pop edx
+	pop ebx
+	ret
+
 SpawnBalloon ENDP
 
 ;Runs when a balloon is popped so it can be removed from the map
