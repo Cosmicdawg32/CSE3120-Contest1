@@ -65,4 +65,24 @@ ClearLoop:
 
 BalloonInit ENDP
 
+SpawnBalloon PROC
+
+SpawnBalloon ENDP
+
+popBalloon PROC
+
+popBalloon ENDP
+
+findBalloon PROC
+
+findBalloon ENDP
+
+moveBalloon PROC
+
+moveBalloon ENDP
+
+damageBalloon PROC
+
+damageBalloon ENDP
+
 END
