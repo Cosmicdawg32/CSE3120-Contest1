@@ -112,6 +112,13 @@ SpawnBalloon ENDP
 
 popBalloon PROC
 
+push esi
+call balloonPointer
+
+mov (Balloon PTR [esi]).active,0
+pop esi
+ret
+
 popBalloon ENDP
 
 ;Finds the current map tile a balloon could be on for computation
