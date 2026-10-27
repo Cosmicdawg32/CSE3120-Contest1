@@ -28,6 +28,7 @@ balloonSpeed BYTE 4, 3, 2, 1 ;Tickspeed setup, subject to change through testing
 balloonHealth BYTE 1, 2, 3, 4 ; Health setup, subject to change through testing follows the order of red yellow blue greeen
 
 BalloonsArr Balloon maxBalloonCount DUP (<>)
+tempPath Byte 200 * 2 DUP(0) ;Temporary until map is done
 
 .code
 
@@ -124,6 +125,16 @@ popBalloon ENDP
 ;Finds the current map tile a balloon could be on for computation
 
 findBalloon PROC
+
+	push ebx
+	push esi
+	call balloonPointer
+	mov ebx,(Balloon PTR [esi]).balloonPathing
+	mov dl,tempPath ;balloonpathing is temporary, when map is done this will be done
+	mov dh,tempPath ;balloonpathing is temporary, when map is done this will be done
+	pop esi
+	pop ebx
+	ret
 
 findBalloon ENDP
 
