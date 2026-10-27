@@ -3,6 +3,7 @@
 ; Ioannis Limniatis
 
 ; Usage of STRUCT was utilized from https://learn.microsoft.com/en-us/cpp/assembler/masm/struct-masm?view=msvc-170
+; Usage of call was utilized from https://www.coddykit.com/courses/assembly/defining-and-calling-procedures-2278939
 
 INCLUDE Irvine32.inc
 
@@ -29,6 +30,7 @@ balloonHealth BYTE 1, 2, 3, 4 ; Health setup, subject to change through testing 
 
 BalloonsArr Balloon maxBalloonCount DUP (<>)
 tempPath Byte 200 * 2 DUP(0) ;Temporary until map is done
+tempPathLen DWORD 200 ;Temporary until map is done
 
 .code
 
@@ -148,6 +150,10 @@ moveBalloon PROC
 	push edx
 	push esi
 
+	mov esi, OFFSET BalloonsArr
+	mov ebx, 0
+	mov ecx, maxBalloonCount
+
 	moveLoop:
 
 	cmp (Balloon PTR [esi]).active,0
@@ -155,7 +161,24 @@ moveBalloon PROC
 
 	inc (Balloon PTR [esi]).moveTick
 
+	movzx eax,(Balloon PTR [esi]).hp
+	mov dl,balloonSpeed[eax]
+	cmp (Balloon PTR [esi]).moveTick,dl
+	jb	moveNextBalloon
+
+	mov (Balloon PTR [esi]).moveTick,0
+	inc (Balloon PTR [esi]).balloonPathing
+	mov eax, (Balloon PTR [esi]).balloonPathing 
+	cmp eax, tempPathLen ;Will be updated once maps are complete
+	jb moveNextBalloon
+	mov eax,ebx
+	call popBalloon
+
 	moveNextBalloon:
+
+	add esi, SIZEOF Balloon
+	inc ebx
+	loop moveLoop
 
 	pop esi
 	pop edx
