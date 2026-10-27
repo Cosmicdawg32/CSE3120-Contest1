@@ -4,6 +4,7 @@
 
 ; Usage of STRUCT was utilized from https://learn.microsoft.com/en-us/cpp/assembler/masm/struct-masm?view=msvc-170
 ; Usage of call was utilized from https://www.coddykit.com/courses/assembly/defining-and-calling-procedures-2278939
+; Usage of .IF and .ELSE utilized from https://learn.microsoft.com/en-us/cpp/assembler/masm/if-masm?view=msvc-170
 
 INCLUDE Irvine32.inc
 
@@ -170,8 +171,11 @@ moveBalloon PROC
 	inc (Balloon PTR [esi]).balloonPathing
 	mov eax, (Balloon PTR [esi]).balloonPathing 
 	cmp eax, tempPathLen ;Will be updated once maps are complete
+
 	jb moveNextBalloon
+	
 	mov eax,ebx
+	
 	call popBalloon
 
 	moveNextBalloon:
@@ -193,6 +197,23 @@ moveBalloon ENDP
 ;Computates the damage given to the balloon, decreaasing layers until there are non left and the balloon has to pop
 
 damageBalloon PROC
+
+	push esi
+	call balloonPointer
+	mov dl, (Balloon PTR [esi]).hp
+
+	.IF dl <= bl
+
+		call popBalloon
+
+	.ELSE
+
+		sub (Balloon PTR [esi]).hp,bl
+
+	.ENDIF
+
+	pop esi
+	ret
 
 damageBalloon ENDP
 
