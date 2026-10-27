@@ -32,6 +32,7 @@ balloonHealth BYTE 1, 2, 3, 4 ; Health setup, subject to change through testing 
 BalloonsArr Balloon maxBalloonCount DUP (<>)
 tempPath Byte 200 * 2 DUP(0) ;Temporary until map is done
 tempPathLen DWORD 200 ;Temporary until map is done
+tempMoney DWORD 200; Temporary until maps and towers are closer to completion
 
 .code
 
@@ -198,21 +199,31 @@ moveBalloon ENDP
 
 damageBalloon PROC
 
+	push eax
+	push ebx
 	push esi
+
 	call balloonPointer
+
 	mov dl, (Balloon PTR [esi]).hp
 
 	.IF dl <= bl
 
+		movzx ebx, dl
+		add tempMoney, ebx
 		call popBalloon
 
 	.ELSE
 
 		sub (Balloon PTR [esi]).hp,bl
+		movzx ebx, bl
+		add tempMoney, ebx
 
 	.ENDIF
 
 	pop esi
+	pop ebx
+	pop eax
 	ret
 
 damageBalloon ENDP
