@@ -130,8 +130,8 @@ findBalloon PROC
 	push esi
 	call balloonPointer
 	mov ebx,(Balloon PTR [esi]).balloonPathing
-	mov dl,tempPath ;balloonpathing is temporary, when map is done this will be done
-	mov dh,tempPath ;balloonpathing is temporary, when map is done this will be done
+	mov dl,tempPath ;tempPath is temporary, when map is done this will be done
+	mov dh,tempPath ;tempPath is temporary, when map is done this will be done
 	pop esi
 	pop ebx
 	ret
@@ -141,6 +141,29 @@ findBalloon ENDP
 ;Moves the balloon each tick according to the balloons speed.
 
 moveBalloon PROC
+
+	push eax
+	push ebx
+	push ecx
+	push edx
+	push esi
+
+	moveLoop:
+
+	cmp (Balloon PTR [esi]).active,0
+	je moveNextBalloon
+
+	inc (Balloon PTR [esi]).moveTick
+
+	moveNextBalloon:
+
+	pop esi
+	pop edx
+	pop ecx
+	pop ebx
+	pop eax
+
+	ret
 
 moveBalloon ENDP
 
