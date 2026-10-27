@@ -69,20 +69,40 @@ BalloonInit ENDP
 
 SpawnBalloon PROC
 
-	push eax
 	push ebx
 	push ecx
+	push edx
 	push esi
+
+	movzx edx, al
+	mov esi, OFFSET BalloonsArr
+	mov ebx, 0
+	mov ecx, maxBalloonCount
 
 spawnLoopSearch:
 
+	cmp		(Balloon PTR [esi]).active,0
+	je		spawnLoopFound
+	add		esi, SIZEOF Balloon
+	inc		ebx
+	loop	spawnLoopSearch
+	;If every slot is full
+	mov		eax, -1
+	jmp		spawnloopEnd
+
 spawnLoopFound:
+
+	mov (Balloon PTR [esi]).active,1
+	mov (Balloon PTR [esi]).hp,dl
+	mov (Balloon PTR [esi]).moveTick,0
+	mov (Balloon PTR [esi]).balloonPathing,0
+	mov eax, ebx
 
 spawnloopEND:
 
 	pop esi
-	pop ecx
 	pop edx
+	pop ecx
 	pop ebx
 	ret
 
