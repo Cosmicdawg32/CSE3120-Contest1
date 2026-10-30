@@ -2,7 +2,3 @@
 ; CSE3120 Contest 1
 ; Nicholas Bleeker
 
-INCUDE masmTD.inc
-
-.data
-
