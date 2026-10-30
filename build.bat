@@ -26,11 +26,11 @@ if not exist build mkdir build
 pushd build
 
 ml /nologo /c /coff /Zi /I "%IRVINE%" /I..\src ^
-    ..\src\main.asm ..\src\map.asm
+    ..\src\main.asm ..\src\map.asm ..\src\ui.asm
 if errorlevel 1 goto fail
 
 link /nologo /SUBSYSTEM:CONSOLE /DEBUG /SAFESEH:NO /OUT:..\masmTD.exe ^
-    main.obj map.obj ^
+    main.obj map.obj ui.obj ^
     "%IRVINE%\Irvine32.lib" kernel32.lib user32.lib
 if errorlevel 1 goto fail
 

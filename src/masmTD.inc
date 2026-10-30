@@ -8,5 +8,5 @@ INCLUDE Irvine32.inc
 MAP_W = 60
 MAP_H = 30
 
-EXTERNDEF helloMsg:BYTE ; To be defined in map.asm and public
-SayHello PROTO          ; To be defined in map.asm
+TICK_MS = 40        ; 1000/40 = 25 ticks/second
+InitConsole PROTO   ; Implemented in ui.asm
