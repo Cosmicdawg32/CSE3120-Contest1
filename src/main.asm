@@ -10,7 +10,9 @@ tickCount DWORD 0   ; temporary for testing
 
 .code
 main PROC
+    call Randomize      ; random number for flower placement
     call InitConsole
+    call InitMap        ; fills map with grass and flowers
     call Clrscr
 
 gameLoop:
@@ -23,11 +25,7 @@ gameLoop:
     je quit             ; Esc exits the game
 
 noKey:
-    inc tickCount       ; temp to test the games update status
-    mov dx, 0           ; DH = row 0, DL = col 0
-    call Gotoxy
-    mov eax, tickCount
-    call WriteDec
+    call RenderFrame    ; Draws the map
 
 waitTick:
     call GetMseconds
