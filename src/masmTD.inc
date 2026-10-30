@@ -23,6 +23,9 @@ T_PATH = 1
 T_TOWER = 2
 T_BLOCK = 3
 
+MAX_PATH = 256
+
 EXTERNDEF mapGrid: BYTE, baseLook:DWORD
+EXTERNDEF pathTiles: BYTE, pathLen: DWORD ; balloon path, in map.asm
 InitMap PROTO
 RenderFrame PROTO
