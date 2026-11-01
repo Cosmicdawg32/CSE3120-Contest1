@@ -27,6 +27,6 @@ MAX_PATH = 256
 
 EXTERNDEF mapGrid: BYTE, baseLook:DWORD
 EXTERNDEF pathTiles: BYTE, pathLen: DWORD ; balloon path, in map.asm
-EXTENDERF cursorX:DWORD, cursorY:DWORD
+EXTERNDEF cursorX:DWORD, cursorY:DWORD
 InitMap PROTO
 RenderFrame PROTO

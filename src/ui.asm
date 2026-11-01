@@ -17,7 +17,7 @@ titleStr BYTE "MASM TD CSE3120", 0
 outBuf BYTE 0,0,0   ; 2 chars + null terminator
 
 cursorX DWORD MAP_W/2
-cursorY DWOORD MAP_H/2
+cursorY DWORD MAP_H/2
 screenCache DWORD MAP_TILES DUP(-1) ; last look of each tile
 curColor DWORD -1                    ; last color of the console
 expCol DWORD -1                     ; Where the console cursor is located
