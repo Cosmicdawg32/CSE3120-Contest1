@@ -34,18 +34,48 @@ InitConsole PROC
     ret
 InitConsole ENDP
 
-DrawLook PROC USES eax edx  ; temp for testing
-    ; eax = look, dl = col, dh = row. Writes one 2 char tile
-    call Gotoxy
+DrawLook PROC USES eax ebx edx
+; EAX = look, DL = col, DH = row. Writes one tile (2 char)
+; Skips SetTextColor if the color is already set
+; Skips Gotoxy if the console cursor is already at DL/DH (expCol/expRow)
+; Records a new color and cursor position for the next call
+    movzx ebx, al
+    cmp ebx, curColor
+    je colorOk
+    mov curColor, ebx
     push eax
-    movzx eax, al           ; color only
+    mov eax, ebx
     call SetTextColor
     pop eax
-    mov outBuf[0], ah       ; char 1
+
+colorOK:
+    movzx ebx, dl
+    cmp ebx, expCol
+    jne move
+    movzx ebx, dh
+    cmp ebx, expRow
+    je temp
+
+move:
+    call Gotoxy
+
+temp:
+    mov outBuf[0], ah
     shr eax, 16
-    mov outBuf[1], al       ; cahr 2
+    mov outBuf[1], al
+    push edx
     mov edx, OFFSET outBuf
     call WriteString
+    pop edx
+    movzx ebx, dl
+    add ebx, 2
+    cmp ebx, SCREEN_W
+    jb @F               ; Jumps to @@
+    mov ebx, -1
+@@: mov expCol, ebx
+    movzx ebx, dh
+    mov expRow, ebx
+
     ret
 DrawLook ENDP
 
@@ -67,4 +97,5 @@ RX: mov eax, baseLook[ebx*4]
     jb RY
     ret
 RenderFrame ENDP
+
 END
