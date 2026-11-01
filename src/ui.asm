@@ -98,4 +98,19 @@ RX: mov eax, baseLook[ebx*4]
     ret
 RenderFrame ENDP
 
+CursorLook PROC USES ecx
+; eax = look of the tile under the cursor, ebx = tile index
+; Returns eax with the cursor highlight
+    movzx ecx, mapGrid[ebx]
+    and eax, 0FFFFFF00h         ; keeps the character textures
+    or al, cursorColors[ecx]    ; new color based on tile index
+    cmp ecx, T_GRASS
+    jne quit
+    and eax, 0FFh                ; draws empty box "[]" on grass
+    or eax, ('[' SHL 8) OR (']' SHL 16)
+
+quit:
+    ret
+CursorLook ENDP
+
 END
