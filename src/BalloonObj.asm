@@ -266,4 +266,28 @@ tickMove:
 
 balloonTick ENDP
 
+;Draws every active balloon the map, for note it will be called after RenderFrame, resuses and utilies moveBalloon code
+
+drawBalloons PROC
+
+	push eax
+	push ebx
+	push ecx
+	push edx
+	push esi
+	push edi
+
+drawLoop:
+
+drawNextBalloon:
+	
+	pop edi
+	pop esi
+	pop edx
+	pop ecx
+	pop ebx
+	pop eax
+	ret
+
+drawBalloons ENDP
 END
