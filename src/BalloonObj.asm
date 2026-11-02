@@ -5,8 +5,9 @@
 ; Usage of STRUCT was utilized from https://learn.microsoft.com/en-us/cpp/assembler/masm/struct-masm?view=msvc-170
 ; Usage of call was utilized from https://www.coddykit.com/courses/assembly/defining-and-calling-procedures-2278939
 ; Usage of .IF and .ELSE utilized from https://learn.microsoft.com/en-us/cpp/assembler/masm/if-masm?view=msvc-170
+; USage of OR from https://www.tutorialspoint.com/assembly_programming/assembly_logical_instructions.htm
 
-INCLUDE Irvine32.inc
+INCLUDE masmTD.inc
 
 maxBalloonCount = 100
 balloonRed = 1
@@ -34,6 +35,16 @@ tempPath Byte 200 * 2 DUP(0) ;Temporary until map is done
 tempPathLen DWORD 200 ;Temporary until map is done
 tempMoney DWORD 200; Temporary until maps and towers are closer to completion
 
+balloonLooks DWORD 0
+
+	DWORD ((red SHL 4) OR white) OR  ('(' SHL 8) OR ( ')' SHL 16)
+	DWORD ((yellow SHL 4) OR black) OR  ('(' SHL 8) OR ( ')' SHL 16)
+	DWORD ((blue SHL 4) OR white) OR  ('(' SHL 8) OR ( ')' SHL 16) 
+	DWORD ((green SHL 4) OR white) OR  ('(' SHL 8) OR ( ')' SHL 16)
+
+spawnTicks = 25
+spawnTimer DWORD 0
+spawnHP BYTE 1
 .code
 
 ;Retrieve the index of the balloon and turn it into an address for the struct
@@ -134,8 +145,8 @@ findBalloon PROC
 	push esi
 	call balloonPointer
 	mov ebx,(Balloon PTR [esi]).balloonPathing
-	mov dl,tempPath ;tempPath is temporary, when map is done this will be done
-	mov dh,tempPath ;tempPath is temporary, when map is done this will be done
+	mov dl,pathTiles[ebx*2] ;tempPath is temporary, when map is done this will be done
+	mov dh,pathTiles[ebx*2+1] ;tempPath is temporary, when map is done this will be done
 	pop esi
 	pop ebx
 	ret
@@ -199,7 +210,7 @@ moveBalloon ENDP
 
 damageBalloon PROC
 
-	push eax
+	push edx
 	push ebx
 	push esi
 
@@ -223,7 +234,7 @@ damageBalloon PROC
 
 	pop esi
 	pop ebx
-	pop eax
+	pop edx
 	ret
 
 damageBalloon ENDP
