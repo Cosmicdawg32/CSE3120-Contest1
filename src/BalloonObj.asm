@@ -8,6 +8,8 @@
 ; USage of OR from https://www.tutorialspoint.com/assembly_programming/assembly_logical_instructions.htm
 
 INCLUDE masmTD.inc
+DrawLook PROTO
+
 
 maxBalloonCount = 100
 balloonRed = 1
@@ -277,10 +279,22 @@ drawBalloons PROC
 	push esi
 	push edi
 
+	mov esi, OFFSET BalloonsArr
+	mov ebx, 0
+	mov ecx, maxBalloonCount
+
 drawLoop:
+
+	cmp (Balloon PTR [esi]).active,0
+
+	je drawNextBalloon
 
 drawNextBalloon:
 	
+	add esi, SIZEOF Balloon
+	inc ebx
+	loop drawLoop
+
 	pop edi
 	pop esi
 	pop edx
