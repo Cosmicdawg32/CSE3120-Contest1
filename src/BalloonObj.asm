@@ -27,7 +27,7 @@ Balloon ENDS
 
 .data
 
-balloonSpeed BYTE 4, 3, 2, 1 ;Tickspeed setup, subject to change through testing goes in the order red yellow blue green
+balloonSpeed BYTE 0, 6, 5, 4, 3 ;Tickspeed setup, subject to change through testing goes in the order red yellow blue green
 balloonHealth BYTE 1, 2, 3, 4 ; Health setup, subject to change through testing follows the order of red yellow blue greeen
 
 BalloonsArr Balloon maxBalloonCount DUP (<>)
@@ -145,8 +145,8 @@ findBalloon PROC
 	push esi
 	call balloonPointer
 	mov ebx,(Balloon PTR [esi]).balloonPathing
-	mov dl,pathTiles[ebx*2] ;tempPath is temporary, when map is done this will be done
-	mov dh,pathTiles[ebx*2+1] ;tempPath is temporary, when map is done this will be done
+	mov dl,pathTiles[ebx*2]
+	mov dh,pathTiles[ebx*2+1]
 	pop esi
 	pop ebx
 	ret
@@ -182,7 +182,7 @@ moveBalloon PROC
 	mov (Balloon PTR [esi]).moveTick,0
 	inc (Balloon PTR [esi]).balloonPathing
 	mov eax, (Balloon PTR [esi]).balloonPathing 
-	cmp eax, tempPathLen ;Will be updated once maps are complete
+	cmp eax, pathLen
 
 	jb moveNextBalloon
 	
