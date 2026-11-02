@@ -79,15 +79,24 @@ temp:
     ret
 DrawLook ENDP
 
-RenderFrame PROC USES eax ebx ecx edx esi   ; temp for testing, redraws everything
+RenderFrame PROC USES eax ebx ecx edx esi edi
     xor ebx, ebx                ; tile index 0, MAP_TILES-1
     xor ecx, ecx                ; y
 RY: xor esi, esi                ; x
-RX: mov eax, baseLook[ebx*4]
+RX: mov eax, baseLook[ebx*4]    
+    cmp esi, cursorX
+    jne @F
+    cmp ecx, cursorY
+    jne @F
+    call CursorLook
+@@: cmp eax, screenCache[ebx*4]
+    je L1
+    mov screenCache[ebx*4], eax
     mov edx, esi
-    shl edx, 1                  ; DL = col = x*2
-    mov dh, cl                  ; DH = row = y
+    shl edx, 1
+    mov dh, cl
     call DrawLook
+L1:                             ; reused code from older RenderFrame
     inc ebx
     inc esi
     cmp esi, MAP_W
