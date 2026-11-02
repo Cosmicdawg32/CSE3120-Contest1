@@ -286,8 +286,21 @@ drawBalloons PROC
 drawLoop:
 
 	cmp (Balloon PTR [esi]).active,0
-
 	je drawNextBalloon
+
+	mov eax, ebx
+	call findBalloon
+
+	movzx edi, dh
+	imul edi, MAP_W
+	movzx eax, dl
+	add edi, eax
+	;mov screenCache[edi*4], -1 ;until screencache is added to masmTD.inc
+	shl dl, 1
+
+	movzx eax, (Balloon PTR [esi]).hp
+	mov eax, balloonLooks[eax*4]
+	call DrawLook
 
 drawNextBalloon:
 	
