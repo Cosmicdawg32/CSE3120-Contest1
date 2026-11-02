@@ -239,4 +239,31 @@ damageBalloon PROC
 
 damageBalloon ENDP
 
+;Will run every game tick, spawns a new balloon every set amount set in spawnTicks, and moves all balloons on the map foward
+
+balloonTick PROC
+
+	push eax
+
+	inc spawnTimer
+	cmp spawnTimer, spawnTicks
+	jb tickMove
+
+	mov spawnTimer, 0
+	mov al, spawnHP
+	call SpawnBalloon
+
+	inc spawnHP
+	cmp spawnHP, balloonGreen
+	jbe tickMove
+	mov spawnHP, balloonRed
+
+tickMove:
+
+	call moveBalloon
+	pop eax
+	ret
+
+balloonTick ENDP
+
 END
