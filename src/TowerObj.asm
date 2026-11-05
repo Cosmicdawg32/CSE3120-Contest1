@@ -4,6 +4,10 @@
 
 Include masmTD.inc
 
+findBalloon PROTO ;Not written yet, will be added to BalloonObj will find the closest balloon in range
+damageBalloon PROTO
+EXTERNDEF tempMoney:DWORD
+
 maxTowers = 10 ;current max towers, can be changed
 towerCost = 50 ;cost needed to place a tower, can be changed
 towerRange = 4 ;How far the tower sees, can be changed
@@ -20,5 +24,12 @@ towerTicksPerFrame BYTE maxTowers DUP(0)
 towerCount DWORD 0
 
 .code
+
+placeTower PROC
+
+placeDone:
+
+placeTower ENDP
+
 
 END
