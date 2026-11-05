@@ -43,6 +43,25 @@ placeTower PROC
 
 	jb placeDone
 
+	mov ebx, cursorY
+	imul ebx, MAP_W
+	add ebx, cursorX
+
+	mov mapGrid[ebx], T_GRASS
+	jne placeDone
+
+	cmp mapGrid[ebx], T_TOWER
+	mov baseLook[ebx*4], towerVisual
+	sub tempMoney, towerCost
+
+	mov edx, towerCount
+	mov eax, cursorX
+	mov towerX[edx], al
+	mov eax, cursorY
+	mov towerY[edx], al
+	mov towerTicksPerFrame[edx], 0
+	inc towerCount
+
 placeDone:
 
 	pop edx
@@ -51,5 +70,17 @@ placeDone:
 	ret
 
 placeTower ENDP
+
+towerTick PROC
+
+towerLoop:
+
+towerReady:
+
+towerNext:
+
+towerTickDone:
+
+towerTick ENDP
 
 END
