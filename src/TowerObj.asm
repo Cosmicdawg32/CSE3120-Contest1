@@ -4,7 +4,7 @@
 
 Include masmTD.inc
 
-findBalloon PROTO ;Not written yet, will be added to BalloonObj will find the closest balloon in range
+findTarget PROTO ;Not written yet, will be added to BalloonObj will find the closest balloon in range
 damageBalloon PROTO
 EXTERNDEF tempMoney:DWORD
 
@@ -25,11 +25,31 @@ towerCount DWORD 0
 
 .code
 
+;Places a tower under the cursor if it is a valid spot to place a tower, checks if there is money to place
+
 placeTower PROC
+
+	push eax
+	push ebx
+	push edx
+
+	mov eax, towerCount
+	cmp eax, maxTowers
+
+	jae placeDone
+
+	mov eax, tempMoney
+	cmp eax, towerCost
+
+	jb placeDone
 
 placeDone:
 
-placeTower ENDP
+	pop edx
+	pop ebx
+	pop eax
+	ret
 
+placeTower ENDP
 
 END

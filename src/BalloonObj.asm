@@ -9,6 +9,7 @@
 
 INCLUDE masmTD.inc
 DrawLook PROTO
+EXTERNDEF tempMoney:DWORD
 
 
 maxBalloonCount = 100
