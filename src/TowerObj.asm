@@ -95,6 +95,18 @@ towerLoop:
 
 towerReadyShoot:
 
+	mov dl, towerX[esi]
+	mov dh, towerY[esi]
+	mov bl, towerRange
+	;call findTarget needs to be done in balloonObj
+	cmp eax, -1
+
+	je towerNext
+
+	mov bl, towerDamage
+	call damageBalloon
+	mov towerTicksPerFrame[esi], towerFireRate
+
 towerNext:
 
 	inc esi
