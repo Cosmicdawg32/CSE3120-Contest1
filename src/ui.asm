@@ -122,4 +122,19 @@ quit:
     ret
 CursorLook ENDP
 
+InvalidateScreen PROC USES eax ecx edi
+; clears the console and redraws the next frame
+    mov eax, HUD_ATTR
+    call SetTextColor
+    call Clrscr
+    mov edi, OFFSET screenCache
+    mov ecx, MAP_TILES
+    mov eax, -1     ; -1 doesnt equal a "real" look
+    cld
+    rep stosd       ; fills ecx dwords at [edi] with eax
+    mov curColor, -1
+    mov expCol, -1
+    ret
+InvalidateScreen ENDP
+
 END
