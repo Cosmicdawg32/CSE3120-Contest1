@@ -47,10 +47,10 @@ placeTower PROC
 	imul ebx, MAP_W
 	add ebx, cursorX
 
-	mov mapGrid[ebx], T_GRASS
+	cmp mapGrid[ebx], T_GRASS
 	jne placeDone
 
-	cmp mapGrid[ebx], T_TOWER
+	mov mapGrid[ebx], T_TOWER
 	mov baseLook[ebx*4], towerVisual
 	sub tempMoney, towerCost
 
@@ -73,13 +73,41 @@ placeTower ENDP
 
 towerTick PROC
 
+	push eax
+	push ebx
+	push ecx
+	push edx
+	push esi
+
+	mov ecx, towerCount
+	cmp ecx, 0
+	je towerTickDone
+
+	mov esi, 0
+
 towerLoop:
 
-towerReady:
+	cmp towerTicksPerFrame[esi], 0
+	je towerReadyShoot
+
+	dec towerTicksPerFrame[esi]
+	jmp towerNext
+
+towerReadyShoot:
 
 towerNext:
 
+	inc esi
+	loop towerLoop
+
 towerTickDone:
+
+	pop esi
+	pop edx
+	pop ecx
+	pop ebx
+	pop eax
+	ret
 
 towerTick ENDP
 
