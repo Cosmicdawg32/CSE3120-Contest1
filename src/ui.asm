@@ -248,4 +248,18 @@ done:
     xor eax, eax
     ret
 CheckConsoleSize ENDP
+
+PollQuitKey PROC USES ebx edx
+; overrides all pending keys while pressed. Returns eax = 1 if esc is pressed
+L1:
+    call ReadKey
+    jz none
+    cmp dx, VK_ESCAPE
+    jne L1
+    mov eax, 1
+    ret
+none:
+    xor eax, eax
+    ret
+PollQuitKey ENDP
 END
