@@ -137,4 +137,33 @@ InvalidateScreen PROC USES eax ecx edi
     ret
 InvalidateScreen ENDP
 
+HandleInput PROC USES ebx edx   ; ReadKey overwrites ebx
+; processes all pending key presses. Returns eax = 1 if the player quits the game
+L1: call ReadKey
+    jz noKey
+    cmp dx, VK_ESCAPE
+    je quit
+    cmp dx, VK_LEFT
+    je left
+    cmp dx, VK_RIGHT
+    je right
+    cmp dx, VK_UP
+    je up
+    cmp dx, VK_DOWN
+    je down
+    test al, al
+    jz L1           ; other non character key presses (shift, home, etc)
+    or al, 20h      ; turns uppercase to lowercase
+    cmp al, 'a'
+    je left
+    cmp al, 'd'
+    je right
+    cmp al, 'w'
+    je al, 's'
+    je down
+    jmp L1
+
+
+HandleInput ENDP
+
 END
