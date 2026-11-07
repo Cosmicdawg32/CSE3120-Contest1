@@ -216,6 +216,36 @@ changed:
     call InvalidateScreen           ; preserves eax and ecx
     mov tooSmall, 0
 checkMin:
-
+    cmp eax, MIN_COLS
+    jb small
+    cmp ecx, MIN_ROWS
+    jb small
+    mov tooSmall, 0
+    mov eax, 1
+    ret
+small:
+    cmp tooSmall, 1
+    je done                         ; dont redraw every tick
+    mov tooSmall, 1
+    mov eax, HUD_ATTR
+    call SetTextColor
+    mov dx, 0                       ; row 0, col 0
+    call Gotoxy
+    mov edx, OFFSET sSmall1
+    call WriteString
+    call Crlf
+    mov edx, OFFSET sSmall2
+    call WriteString
+    call Crlf
+    mov edx, OFFSET sSmall3
+    call WriteString
+    call Crlf
+    mov edx, OFFSET sSmall4
+    call WriteString
+    mov curColor, -1
+    mov expCol, -1
+done:
+    xor eax, eax
+    ret
 CheckConsoleSize ENDP
 END
