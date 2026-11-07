@@ -162,8 +162,26 @@ L1: call ReadKey
     je al, 's'
     je down
     jmp L1
-
-
+left: cmp CursorX, 0
+    je L1
+    dec cursorX
+    jmp L1
+right: cmp cursorX, MAP_W-1
+    jae L1
+    inc cursorX
+    jmp L1
+up: cmp cursorY, 0
+    je L1
+    dec cursorY
+    jmp L1
+down: cmp cursorY, MAP_H-1
+    jae L1
+    inc cursorY
+    jmp L1
+noKey: xor eax, eax
+    ret
+quit: mov eax, 1
+    ret
 HandleInput ENDP
 
 END
