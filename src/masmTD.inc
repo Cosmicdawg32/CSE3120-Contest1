@@ -33,3 +33,5 @@ RenderFrame PROTO
 
 InvalidateScreen PROTO
 HandleInput PROTO
+CheckConsoleSize PROTO
+PollQuitKey PROTO
