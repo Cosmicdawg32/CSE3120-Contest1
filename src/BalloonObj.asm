@@ -30,6 +30,10 @@ Balloon ENDS
 
 .data
 
+targetX BYTE 0
+targetY BYTE 0
+targetRange BYTE 0
+
 balloonSpeed BYTE 0, 6, 5, 4, 3 ;Tickspeed setup, subject to change through testing goes in the order red yellow blue green
 balloonHealth BYTE 1, 2, 3, 4 ; Health setup, subject to change through testing follows the order of red yellow blue greeen
 
@@ -318,4 +322,28 @@ drawNextBalloon:
 	ret
 
 drawBalloons ENDP
+
+findTarget PROC
+
+	push ebx
+	push ecx
+	push edx
+	push esi
+	push edi
+
+targetLoop:
+
+targetNext:
+
+targetDone:
+
+	pop edi
+	pop esi
+	pop edx
+	pop ecx
+	pop ebx
+	ret
+
+findTarget ENDP
+
 END
