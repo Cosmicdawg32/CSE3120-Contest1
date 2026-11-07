@@ -41,7 +41,7 @@ DrawLook PROC USES eax ebx edx
 ; Records a new color and cursor position for the next call
     movzx ebx, al
     cmp ebx, curColor
-    je colorOk
+    je colorOK
     mov curColor, ebx
     push eax
     mov eax, ebx
@@ -159,6 +159,7 @@ L1: call ReadKey
     cmp al, 'd'
     je right
     cmp al, 'w'
+    je up
     je al, 's'
     je down
     jmp L1
@@ -166,7 +167,7 @@ left: cmp CursorX, 0
     je L1
     dec cursorX
     jmp L1
-right: cmp cursorX, MAP_W-1
+right: cmp CursorX, MAP_W-1
     jae L1
     inc cursorX
     jmp L1
