@@ -331,9 +331,29 @@ findTarget PROC
 	push esi
 	push edi
 
+	mov targetX, dl
+	mov targetY, dh
+	mov targetRange, bl
+
+	mov esi, OFFSET BalloonsArr
+	mov ebx, 0
+	mov ecx, maxBalloonCount
+
 targetLoop:
 
+	cmp (Balloon PTR [esi]).active,0
+	je targetNext
+
+	mov eax, ebx
+	jmp targetDone
+
 targetNext:
+
+	add esi, SIZEOF Balloon
+	inc ebx
+	loop targetLoop
+
+	mov eax, -1
 
 targetDone:
 
