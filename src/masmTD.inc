@@ -30,3 +30,6 @@ EXTERNDEF pathTiles: BYTE, pathLen: DWORD ; balloon path, in map.asm
 EXTERNDEF cursorX:DWORD, cursorY:DWORD
 InitMap PROTO
 RenderFrame PROTO
+
+InvalidateScreen PROTO
+HandleInput PROTO
