@@ -25,6 +25,15 @@ expRow DWORD -1
 cursorColors BYTE CURSOR_COLOR_OK, CURSOR_COLOR_BAD, CURSOR_COLOR_SELL, CURSOR_COLOR_BAD
 ; In order of:        T_GRASS,            T_PATH,         T_TOWER,          T_BLOCK
 
+csbi CONSOLE_SCREEN_BUFFER_INFO <>
+lastCols DWORD 0
+last Rows DWORD 0
+tooSmall DWORD 0    ; 1 = warning
+sSmall1 BYTE "Window too small!", 0
+sSmall2 BYTE "Enlarge console window", 0
+sSmall3 BYTE "to at least 121 x 36.", 0
+sSmall4 BYTE "Press Esc to quit.", 0
+
 .code
 InitConsole PROC
     INVOKE GetStdHandle, STD_OUTPUT_HANDLE
@@ -185,4 +194,28 @@ quit: mov eax, 1
     ret
 HandleInput ENDP
 
+CheckConsoleSize PROC USES ebx ecx edx
+; rturns eax = 1 if the window is big enough. 0 if too small
+; Forces a full redraw whenever the size changes
+    INVOKE GetConsoleScreenBufferInfo, hOut, ADDR csbi
+    movzx eax, csbi.srWindow.Right
+    movzx ebx, csbi.srWindow.Left
+    sub eax, ebx
+    inc eax                         ; eax = col
+    movzx ecx, csbi.srWindow.Bottom
+    movzx ebx, csbi.srWindow.Top
+    sub ecx, ebx
+    inc ecx                          ; ecx = row
+    cmp eax, lastCols
+    jne changed
+    cmp ecx, lastRows
+    je checkMin
+changed:
+    mov lastCols, eax
+    mov lastRows, ecx
+    call InvalidateScreen           ; preserves eax and ecx
+    mov tooSmall, 0
+checkMin:
+
+CheckConsoleSize ENDP
 END

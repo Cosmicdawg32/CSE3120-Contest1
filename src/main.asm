@@ -10,14 +10,16 @@ tickCount DWORD 0   ; temporary for testing
 
 .code
 main PROC
-    call Randomize      ; random number for flower placement
+    call Randomize          ; random number for flower placement
     call InitConsole
-    call InitMap        ; fills map with grass and flowers
-    call Clrscr
+    call InitMap            ; fills map with grass and flowers
+    call InvalidateScreen   ; checks if console winow is the correct size
 
 gameLoop:
     call GetMseconds    ; eax = milliseconds since midnight
     mov frameStart, eax
+
+    call CheckCon
 
     call ReadKey        ; ZF = 1 if no key is waiting
     jz noKey            ; No key skips the check
