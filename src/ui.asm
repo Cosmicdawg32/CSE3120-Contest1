@@ -27,7 +27,7 @@ cursorColors BYTE CURSOR_COLOR_OK, CURSOR_COLOR_BAD, CURSOR_COLOR_SELL, CURSOR_C
 
 csbi CONSOLE_SCREEN_BUFFER_INFO <>
 lastCols DWORD 0
-last Rows DWORD 0
+lastRows DWORD 0
 tooSmall DWORD 0    ; 1 = warning
 sSmall1 BYTE "Window too small!", 0
 sSmall2 BYTE "Enlarge console window", 0
@@ -169,14 +169,14 @@ L1: call ReadKey
     je right
     cmp al, 'w'
     je up
-    je al, 's'
+    cmp al, 's'
     je down
     jmp L1
-left: cmp CursorX, 0
+left: cmp cursorX, 0
     je L1
     dec cursorX
     jmp L1
-right: cmp CursorX, MAP_W-1
+right: cmp cursorX, MAP_W-1
     jae L1
     inc cursorX
     jmp L1
