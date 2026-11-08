@@ -98,7 +98,7 @@ towerReadyShoot:
 	mov dl, towerX[esi]
 	mov dh, towerY[esi]
 	mov bl, towerRange
-	;call findTarget needs to be done in balloonObj
+	call findTarget
 	cmp eax, -1
 
 	je towerNext
