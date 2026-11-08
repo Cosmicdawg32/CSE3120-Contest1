@@ -13,21 +13,26 @@ main PROC
     call Randomize          ; random number for flower placement
     call InitConsole
     call InitMap            ; fills map with grass and flowers
-    call InvalidateScreen   ; checks if console winow is the correct size
+    call InvalidateScreen   ; clears screen and forces a first draw
 
 gameLoop:
-    call GetMseconds    ; eax = milliseconds since midnight
+    call GetMseconds        ; eax = milliseconds since midnight
     mov frameStart, eax
 
-    call CheckCon
+    call CheckConsoleSize   ; eax = 1 if the window is the correct size
+    test eax, eax
+    jnz sizeOK
+    call PollQuitKey        ; Game paused
+    cmp eax, 1
+    je quit
+    jmp waitTick
 
-    call ReadKey        ; ZF = 1 if no key is waiting
-    jz noKey            ; No key skips the check
-    cmp dx, VK_ESCAPE   ; DX = key code of pressed key
-    je quit             ; Esc exits the game
-
-noKey:
-    call RenderFrame    ; Draws the map
+sizeOK:
+    call HandleInput        ; eax 1 if esc was pressed
+    cmp eax, 1
+    je quit
+    ; future updates here
+    call RenderFrame
 
 waitTick:
     call GetMseconds
