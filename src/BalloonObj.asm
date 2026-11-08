@@ -345,6 +345,34 @@ targetLoop:
 	je targetNext
 
 	mov eax, ebx
+	call findBalloon
+
+	movzx eax, dl
+	movzx edi, targetX
+	sub eax, edi
+	jns targetXPositive
+	neg eax
+
+targetXPositive:
+
+	movzx edi, targetRange
+	cmp eax, edi
+	ja targetNext
+
+	movzx eax, dh
+	movzx edi, targetY
+	sub eax, edi
+
+	jns targetYPositive
+	neg eax
+
+targetYPositive:
+
+	movzx edi, targetRange
+	cmp eax, edi
+	ja targetNext
+
+	mov eax, ebx
 	jmp targetDone
 
 targetNext:
