@@ -25,6 +25,15 @@ expRow DWORD -1
 cursorColors BYTE CURSOR_COLOR_OK, CURSOR_COLOR_BAD, CURSOR_COLOR_SELL, CURSOR_COLOR_BAD
 ; In order of:        T_GRASS,            T_PATH,         T_TOWER,          T_BLOCK
 
+csbi CONSOLE_SCREEN_BUFFER_INFO <>
+lastCols DWORD 0
+lastRows DWORD 0
+tooSmall DWORD 0    ; 1 = warning
+sSmall1 BYTE "Window too small!", 0
+sSmall2 BYTE "Enlarge console window", 0
+sSmall3 BYTE "to at least 121 x 36.", 0
+sSmall4 BYTE "Press Esc to quit.", 0
+
 .code
 InitConsole PROC
     INVOKE GetStdHandle, STD_OUTPUT_HANDLE
@@ -41,7 +50,7 @@ DrawLook PROC USES eax ebx edx
 ; Records a new color and cursor position for the next call
     movzx ebx, al
     cmp ebx, curColor
-    je colorOk
+    je colorOK
     mov curColor, ebx
     push eax
     mov eax, ebx
@@ -122,4 +131,135 @@ quit:
     ret
 CursorLook ENDP
 
+InvalidateScreen PROC USES eax ecx edi
+; clears the console and redraws the next frame
+    mov eax, HUD_ATTR
+    call SetTextColor
+    call Clrscr
+    mov edi, OFFSET screenCache
+    mov ecx, MAP_TILES
+    mov eax, -1     ; -1 doesnt equal a "real" look
+    cld
+    rep stosd       ; fills ecx dwords at [edi] with eax
+    mov curColor, -1
+    mov expCol, -1
+    ret
+InvalidateScreen ENDP
+
+HandleInput PROC USES ebx edx   ; ReadKey overwrites ebx
+; processes all pending key presses. Returns eax = 1 if the player quits the game
+L1: call ReadKey
+    jz noKey
+    cmp dx, VK_ESCAPE
+    je quit
+    cmp dx, VK_LEFT
+    je left
+    cmp dx, VK_RIGHT
+    je right
+    cmp dx, VK_UP
+    je up
+    cmp dx, VK_DOWN
+    je down
+    test al, al
+    jz L1           ; other non character key presses (shift, home, etc)
+    or al, 20h      ; turns uppercase to lowercase
+    cmp al, 'a'
+    je left
+    cmp al, 'd'
+    je right
+    cmp al, 'w'
+    je up
+    cmp al, 's'
+    je down
+    jmp L1
+left: cmp cursorX, 0
+    je L1
+    dec cursorX
+    jmp L1
+right: cmp cursorX, MAP_W-1
+    jae L1
+    inc cursorX
+    jmp L1
+up: cmp cursorY, 0
+    je L1
+    dec cursorY
+    jmp L1
+down: cmp cursorY, MAP_H-1
+    jae L1
+    inc cursorY
+    jmp L1
+noKey: xor eax, eax
+    ret
+quit: mov eax, 1
+    ret
+HandleInput ENDP
+
+CheckConsoleSize PROC USES ebx ecx edx
+; rturns eax = 1 if the window is big enough. 0 if too small
+; Forces a full redraw whenever the size changes
+    INVOKE GetConsoleScreenBufferInfo, hOut, ADDR csbi
+    movzx eax, csbi.srWindow.Right
+    movzx ebx, csbi.srWindow.Left
+    sub eax, ebx
+    inc eax                         ; eax = col
+    movzx ecx, csbi.srWindow.Bottom
+    movzx ebx, csbi.srWindow.Top
+    sub ecx, ebx
+    inc ecx                          ; ecx = row
+    cmp eax, lastCols
+    jne changed
+    cmp ecx, lastRows
+    je checkMin
+changed:
+    mov lastCols, eax
+    mov lastRows, ecx
+    call InvalidateScreen           ; preserves eax and ecx
+    mov tooSmall, 0
+checkMin:
+    cmp eax, MIN_COLS
+    jb small
+    cmp ecx, MIN_ROWS
+    jb small
+    mov tooSmall, 0
+    mov eax, 1
+    ret
+small:
+    cmp tooSmall, 1
+    je done                         ; dont redraw every tick
+    mov tooSmall, 1
+    mov eax, HUD_ATTR
+    call SetTextColor
+    mov dx, 0                       ; row 0, col 0
+    call Gotoxy
+    mov edx, OFFSET sSmall1
+    call WriteString
+    call Crlf
+    mov edx, OFFSET sSmall2
+    call WriteString
+    call Crlf
+    mov edx, OFFSET sSmall3
+    call WriteString
+    call Crlf
+    mov edx, OFFSET sSmall4
+    call WriteString
+    mov curColor, -1
+    mov expCol, -1
+done:
+    xor eax, eax
+    ret
+CheckConsoleSize ENDP
+
+PollQuitKey PROC USES ebx edx
+; overrides all pending keys while pressed. Returns eax = 1 if esc is pressed
+L1:
+    call ReadKey
+    jz none
+    cmp dx, VK_ESCAPE
+    jne L1
+    mov eax, 1
+    ret
+none:
+    xor eax, eax
+    ret
+PollQuitKey ENDP
 END
