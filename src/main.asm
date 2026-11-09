@@ -27,11 +27,17 @@ gameLoop:
     je quit
     jmp waitTick
 
+    call InitMap
+    call BalloonInit
+    call InvalidateScreen
+
 sizeOK:
     call HandleInput        ; eax 1 if esc was pressed
     cmp eax, 1
     je quit
     ; future updates here
+    call balloonTick
+    call towerTick
     call RenderFrame
 
 waitTick:

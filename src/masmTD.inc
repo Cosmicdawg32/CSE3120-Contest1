@@ -35,3 +35,14 @@ InvalidateScreen PROTO
 HandleInput PROTO
 CheckConsoleSize PROTO
 PollQuitKey PROTO
+
+EXTERNDEF tempMoney: DWORD
+
+BalloonInit PROTO       ; BalloonObj.asm
+balloonTick PROTO
+drawBalloons PROTO
+findTarget PROTO
+damageBalloon PROTO
+
+placeTower PROTO        ; TowerObj.asm
+towerTick PROTO

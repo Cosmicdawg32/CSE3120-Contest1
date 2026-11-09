@@ -8,8 +8,8 @@
 ; USage of OR from https://www.tutorialspoint.com/assembly_programming/assembly_logical_instructions.htm
 
 INCLUDE masmTD.inc
-DrawLook PROTO
-EXTERNDEF tempMoney:DWORD
+;DrawLook PROTO
+;EXTERNDEF tempMoney:DWORD
 
 
 maxBalloonCount = 100
