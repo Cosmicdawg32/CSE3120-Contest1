@@ -138,9 +138,29 @@ sellFind:
 	cmp eax, cursorY
 	je sellFound
 sellNext:
+	inc edx
+	jmp sellFind
 sellFound:
-sellDone:
+	dec ecx						; ecx = index of last tower
+	mov towerCount, ecx
+	mov al, towerX[ecx]			; moves the last tower into this slot
+	mov towerX[edx], al
+	mov al, towerY[ecx]
+	mov towerY[edx], al
+	mov al, towerTicksPerFrame[ecx]
+	mov towerTicksPerFrame[edx], al
 
+	; tuens the tile back to grass
+	mov ebx, cursorY
+	imul ebx, MAP_W
+	add ebx, cursorX
+	mov mapGrid[ebx], T_GRASS
+	mov baseLook[ebx*4], LOOK_GRASS
+
+	add tempMoney, towerCost * 7/10
+	mov hudTemp, 1
+sellDone:
+	ret
 sellTower ENDP
 
 END
