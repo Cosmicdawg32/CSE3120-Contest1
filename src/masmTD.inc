@@ -25,6 +25,10 @@ T_BLOCK = 3
 
 MAX_PATH = 256
 
+START_LIVES = 50
+LOOK_GRASS = ((lightGreen SHL 4) OR green) OR (' ' SHL 8) OR (' ' SHL 16)
+
+EXTERNDEF lives: SDWORD
 EXTERNDEF mapGrid: BYTE, baseLook:DWORD
 EXTERNDEF pathTiles: BYTE, pathLen: DWORD ; balloon path, in map.asm
 EXTERNDEF cursorX:DWORD, cursorY:DWORD
