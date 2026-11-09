@@ -285,7 +285,7 @@ drawBalloons PROC
 	push edi
 
 	mov esi, OFFSET BalloonsArr
-	mov ebx, 0
+	xor ebx, ebx					; balloon index
 	mov ecx, maxBalloonCount
 
 drawLoop:
@@ -294,18 +294,15 @@ drawLoop:
 	je drawNextBalloon
 
 	mov eax, ebx
-	call findBalloon
+	call findBalloon		
 
 	movzx edi, dh
 	imul edi, MAP_W
 	movzx eax, dl
 	add edi, eax
-	;mov screenCache[edi*4], -1 ;until screencache is added to masmTD.inc
-	shl dl, 1
-
 	movzx eax, (Balloon PTR [esi]).hp
 	mov eax, balloonLooks[eax*4]
-	call DrawLook
+	mov overlay[edi*4], eax
 
 drawNextBalloon:
 	
@@ -320,7 +317,6 @@ drawNextBalloon:
 	pop ebx
 	pop eax
 	ret
-
 drawBalloons ENDP
 
 findTarget PROC
