@@ -46,3 +46,4 @@ damageBalloon PROTO
 
 placeTower PROTO        ; TowerObj.asm
 towerTick PROTO
+EXTERNDEF overlay: DWORD
