@@ -193,8 +193,13 @@ moveBalloon PROC
 
 	jb moveNextBalloon
 	
-	mov eax,ebx
-	
+	movzx eax, (Balloon PTR [esi]).hp	; lives lost = layers left
+	sub lives, eax
+	cmp lives, 0
+	jge @f
+	mov lives, 0
+@@: mov hudTemp, 1
+	mov eax, ebx
 	call popBalloon
 
 	moveNextBalloon:
