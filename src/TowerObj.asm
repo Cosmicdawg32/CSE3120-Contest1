@@ -53,6 +53,7 @@ placeTower PROC
 	mov mapGrid[ebx], T_TOWER
 	mov baseLook[ebx*4], towerVisual
 	sub tempMoney, towerCost
+	mov hudTemp, 1
 
 	mov edx, towerCount
 	mov eax, cursorX
@@ -122,5 +123,24 @@ towerTickDone:
 	ret
 
 towerTick ENDP
+
+sellTower PROC USES eax ebx ecx edx
+; sells the tower under the cursor for 70% of original cost
+	mov ecx, towerCount
+	xor edx, edx				; tower index
+sellFind:
+	cmp edx, ecx
+	jae sellDone				; no tower on tile
+	movzx eax, towerX[edx]
+	cmp eax, cursorX
+	jne sellNext
+	movzx eax, towerY[edx]
+	cmp eax, cursorY
+	je sellFound
+sellNext:
+sellFound:
+sellDone:
+
+sellTower ENDP
 
 END
