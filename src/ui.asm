@@ -13,6 +13,11 @@ HUD_ATTR = (black SHL 4) or lightGray
 hOut DWORD 0
 cursorInfo CONSOLE_CURSOR_INFO <100, 0> ; size = 100, visible = 0
 titleStr BYTE "MASM TD CSE3120", 0
+hudTemp DWORD 1
+blankLine BYTE SCREEN_W-1 DUP(' '), 0
+sLives BYTE "HEALTH ", 0
+sMoney BYTE "       MONEY $", 0
+sControls BYTE "Arrows/WASD: move   ENTER/Space: build tower ($50)  x/Del: sell tower   Esc: quit", 0
 
 outBuf BYTE 0,0,0   ; 2 chars + null terminator
 
