@@ -177,6 +177,8 @@ L1: call ReadKey
     je up
     cmp dx, VK_DOWN
     je down
+    cmp dx, 2Eh
+    je sell
     test al, al
     jz L1           ; other non character key presses (shift, home, etc)
     cmp al, 0Dh
@@ -192,6 +194,8 @@ L1: call ReadKey
     je up
     cmp al, 's'
     je down
+    cmp al, 'x'
+    je sell
     jmp L1
 left: cmp cursorX, 0
     je L1
@@ -210,6 +214,8 @@ down: cmp cursorY, MAP_H-1
     inc cursorY
     jmp L1
 place: call placeTower
+    jmp L1
+sell: call sellTower
     jmp L1
 noKey: xor eax, eax
     ret
