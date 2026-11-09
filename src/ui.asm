@@ -34,6 +34,8 @@ sSmall2 BYTE "Enlarge console window", 0
 sSmall3 BYTE "to at least 121 x 36.", 0
 sSmall4 BYTE "Press Esc to quit.", 0
 
+overlay DWORD MAP_TILES DUP(0)
+
 .code
 InitConsole PROC
     INVOKE GetStdHandle, STD_OUTPUT_HANDLE
@@ -89,11 +91,21 @@ temp:
 DrawLook ENDP
 
 RenderFrame PROC USES eax ebx ecx edx esi edi
+    mov edi, OFFSET overlay
+    mov ecx, MAP_TILES
+    xor eax, eax
+    cld
+    rep stosd
+    call drawBalloons
+
     xor ebx, ebx                ; tile index 0, MAP_TILES-1
     xor ecx, ecx                ; y
 RY: xor esi, esi                ; x
-RX: mov eax, baseLook[ebx*4]    
-    cmp esi, cursorX
+RX: mov eax, overlay[ebx*4]    
+    test eax, eax
+    jnz @f
+    mov eax, baseLook[ebx*4]
+@@: cmp esi, cursorX
     jne @F
     cmp ecx, cursorY
     jne @F
@@ -162,6 +174,10 @@ L1: call ReadKey
     je down
     test al, al
     jz L1           ; other non character key presses (shift, home, etc)
+    cmp al, 0Dh
+    je place
+    cmp al, ' '
+    je place
     or al, 20h      ; turns uppercase to lowercase
     cmp al, 'a'
     je left
@@ -187,6 +203,8 @@ up: cmp cursorY, 0
 down: cmp cursorY, MAP_H-1
     jae L1
     inc cursorY
+    jmp L1
+place: call placeTower
     jmp L1
 noKey: xor eax, eax
     ret
