@@ -13,8 +13,8 @@ main PROC
     call Randomize          ; random number for flower placement
     call InitConsole
     call InitMap            ; fills map with grass and flowers
+    call BalloonInit
     call InvalidateScreen   ; clears screen and forces a first draw
-
 gameLoop:
     call GetMseconds        ; eax = milliseconds since midnight
     mov frameStart, eax
@@ -26,10 +26,6 @@ gameLoop:
     cmp eax, 1
     je quit
     jmp waitTick
-
-    call InitMap
-    call BalloonInit
-    call InvalidateScreen
 
 sizeOK:
     call HandleInput        ; eax 1 if esc was pressed
