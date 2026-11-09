@@ -4,7 +4,6 @@
 
 INCLUDE masmTD.inc
 
-LOOK_GRASS = ((lightGreen SHL 4) OR green) OR (' ' SHL 8) OR (' ' SHL 16)
 LOOK_PATH = ((lightGray SHL 4) OR gray) OR ('[' SHL 8) OR (']' SHL 16)
 LOOK_TREE1 = ((green SHL 4) OR lightGreen) OR ('&' SHL 8) OR ('%' SHL 16)
 LOOK_TREE2 = ((green SHL 4) OR lightGreen) OR ('%' SHL 8) OR ('&' SHL 16)

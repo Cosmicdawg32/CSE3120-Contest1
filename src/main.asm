@@ -7,6 +7,7 @@ INCLUDE masmTD.inc
 .data
 frameStart DWORD 0
 tickCount DWORD 0   ; temporary for testing
+lives SDWORD START_LIVES
 
 .code
 main PROC
