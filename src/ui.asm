@@ -130,7 +130,12 @@ L1:                             ; reused code from older RenderFrame
     inc ecx
     cmp ecx, MAP_H
     jb RY
-    ret
+
+    cmp hudTemp, 0
+    je @f
+    call DrawHUD
+    mov hudTemp, 0
+@@: ret
 RenderFrame ENDP
 
 CursorLook PROC USES ecx
@@ -160,6 +165,7 @@ InvalidateScreen PROC USES eax ecx edi
     rep stosd       ; fills ecx dwords at [edi] with eax
     mov curColor, -1
     mov expCol, -1
+    mov hudTemp, 1
     ret
 InvalidateScreen ENDP
 
@@ -185,7 +191,28 @@ PutText PROC
 PutText ENDP
 
 DrawHUD PROC USES eax edx
-;...
+    mov dh, HUD_ROWS        ; row 1 = health and money
+    call HudLine
+    mov eax, lightRed
+    mov edx, OFFSET sLives
+    call PutText
+    mov eax, lives
+    call WriteDec
+    mov eax, yellow
+    mov edx, OFFSET sMoney
+    call PutText
+    mov eax, tempMoney
+    call WriteDec
+
+    mov dh, HUD_ROWS+1      ; ROW 2 = Controls
+    call HudLine
+    mov eax, gray
+    mov edx, OFFSET sControls
+    call PutText
+
+    mov curColor, -1
+    mov expCol, -1
+    ret
 DrawHUD ENDP
 
 HandleInput PROC USES ebx edx   ; ReadKey overwrites ebx
