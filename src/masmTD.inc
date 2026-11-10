@@ -3,6 +3,8 @@
 ; Nicholas Bleeker
 ; This file shares constants, structures, data, and prototypes
 
+; Fixed tick rate information from: https://gameprogrammingpatterns.com/game-loop.html
+
 INCLUDE Irvine32.inc
 
 MAP_W = 60

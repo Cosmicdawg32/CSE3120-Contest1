@@ -2,6 +2,13 @@
 ; CSE3120 Contest 1
 ; Nicholas Bleeker
 
+; @f information from: https://learn.microsoft.com/en-us/cpp/assembler/masm/at-f?view=msvc-170
+; @@ information from: https://learn.microsoft.com/en-us/cpp/assembler/masm/at-at?view=msvc-170
+; Key Codes found from: https://learn.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes
+; ReadKey information from: https://csc.csudh.edu/mmccullough/asm/help/source/irvinelib/readkey.htm
+; Background and foreground color information from: https://csc.csudh.edu/mmccullough/asm/help/source/irvinelib/settextcolor.htm
+; screenCache inspired from: https://gameprogrammingpatterns.com/dirty-flag.html
+
 INCLUDE masmTD.inc
 
 CURSOR_COLOR_OK = (white SHL 4) OR black             ; When over empty grass

@@ -1,11 +1,13 @@
 ; BalloonOBJ.asm
 ; CSE3120 Contest 1
-; Ioannis Limniatis
+; Ioannis Limniatis, Nicholas Bleeker
 
 ; Usage of STRUCT was utilized from https://learn.microsoft.com/en-us/cpp/assembler/masm/struct-masm?view=msvc-170
 ; Usage of call was utilized from https://www.coddykit.com/courses/assembly/defining-and-calling-procedures-2278939
 ; Usage of .IF and .ELSE utilized from https://learn.microsoft.com/en-us/cpp/assembler/masm/if-masm?view=msvc-170
 ; USage of OR from https://www.tutorialspoint.com/assembly_programming/assembly_logical_instructions.htm
+
+; BalloonsArr utilized from https://gameprogrammingpatterns.com/object-pool.html
 
 INCLUDE masmTD.inc
 ;DrawLook PROTO

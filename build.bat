@@ -3,6 +3,13 @@
 :: Nicholas Bleeker
 :: Helps streamline the build process. Save locally and change the path to your Irvine library location.
 
+:: Batch commands found from: https://learn.microsoft.com/en-us/cpp/assembler/masm/ml-and-ml64-command-line-reference?view=msvc-170
+:: Linker information found from: https://learn.microsoft.com/en-us/cpp/build/reference/linker-options?view=msvc-170
+:: SAFESESH information found from: https://learn.microsoft.com/en-us/cpp/build/reference/safeseh-image-has-safe-exception-handlers?view=msvc-170
+:: ml.exe and link.exe PATH information found from: https://learn.microsoft.com/en-us/cpp/build/building-on-the-command-line?view=msvc-170
+
+
+
 @echo off
 setlocal
 cd /d "%~dp0"

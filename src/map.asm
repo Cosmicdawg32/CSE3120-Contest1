@@ -2,6 +2,10 @@
 ; CSE3120 Contest 1
 ; Nicholas Bleeker
 
+; Usage of OR was utilized from: https://learn.microsoft.com/en-us/cpp/assembler/masm/operator-or?view=msvc-170
+; Usage of SHL was utilized from: https://learn.microsoft.com/en-us/cpp/assembler/masm/operator-shl?view=msvc-170
+; IMUL information found from: https://www.felixcloutier.com/x86/imul.html
+
 INCLUDE masmTD.inc
 
 LOOK_PATH = ((lightGray SHL 4) OR gray) OR ('[' SHL 8) OR (']' SHL 16)
