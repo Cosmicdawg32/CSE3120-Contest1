@@ -163,6 +163,31 @@ InvalidateScreen PROC USES eax ecx edi
     ret
 InvalidateScreen ENDP
 
+HudLine PROC USES eax edx
+; dh = row
+    mov dl, 0
+    call Gotoxy
+    mov eax, HUD_ATTR
+    call SetTextColor
+    push edx
+    mov edx, OFFSET blankLine
+    call WriteString
+    pop edx
+    call Gotoxy
+    ret
+HudLine ENDP
+
+PutText PROC
+; eax = color, edx = string
+    call SetTextColor
+    call WriteString
+    ret
+PutText ENDP
+
+DrawHUD PROC USES eax edx
+;...
+DrawHUD ENDP
+
 HandleInput PROC USES ebx edx   ; ReadKey overwrites ebx
 ; processes all pending key presses. Returns eax = 1 if the player quits the game
 L1: call ReadKey
