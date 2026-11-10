@@ -1,12 +1,12 @@
 # CSE3120-Contest1
 Repository for CSE3120 project
 
-Build Instrucitons:
+Build Instructions:
 1. Ensure that the src folder and build.bat are located in the same directory
-2. Open build.bat in notepad or an IDE
+2. Open build.bat in Notepad or an IDE
 3. On line 18, change "%USERPROFILE%\Documents\ASM\Irvine\IRVINE32.inc" to where IRVINE32.inc is located on your machine
 4. Save changes and run build.bat
-5. Run masmTD.exe and resize console window to the correct size
+5. Run masmTD.exe and resize the console window to the correct size
 6. Have fun!
 
 List of all sources used (Sources are also mentioned in their respective .asm file):<br>
