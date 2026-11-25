@@ -58,6 +58,9 @@ leadLook DWORD ((black SHL 4) OR white) OR ('(' SHL 8) OR (')' SHL 16)
 spawnTicks = 25
 spawnTimer DWORD 0
 spawnHP BYTE 1
+spawnTypes BYTE 0, 0, 0, 0, typeLead ; 0 is for normal balloons
+spawnTypeIndex DWORD 0
+
 .code
 
 ;Retrieve the index of the balloon and turn it into an address for the struct
@@ -263,6 +266,7 @@ damageBalloon ENDP
 balloonTick PROC
 
 	push eax
+	push ebx
 
 	inc spawnTimer
 	cmp spawnTimer, spawnTicks
@@ -270,9 +274,18 @@ balloonTick PROC
 
 	mov spawnTimer, 0
 	mov al, spawnHP
-	mov ah, 0
 
-	call SpawnBalloon
+	mov ebx, spawnTypeIndex
+	mov ah, spawnTypes[ebx]
+	call spawnBalloon
+
+	inc spawnTypeIndex
+	cmp spawnTypeIndex, LENGTHOF spawnTypes
+
+	jb tickNextHp
+	mov spawnTypeIndex, 0
+
+tickNextHp:
 
 	inc spawnHP
 	cmp spawnHP, balloonGreen
@@ -282,6 +295,7 @@ balloonTick PROC
 tickMove:
 
 	call moveBalloon
+	pop ebx
 	pop eax
 	ret
 
