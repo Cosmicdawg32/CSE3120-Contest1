@@ -20,6 +20,7 @@ balloonYellow = 2
 balloonBlue = 3
 balloonGreen = 4
 typeLead = 1
+typeCamo = 2
 leadSpeed = 8
 
 Balloon STRUCT
@@ -37,7 +38,7 @@ Balloon ENDS
 targetX BYTE 0
 targetY BYTE 0
 targetRange BYTE 0
-targetsHitLead BYTE 0 ;Check if the tower can hit lead
+targetSpecific BYTE 0 ;Check if the tower can hit a specified balloon, such as lead or camo
 
 balloonSpeed BYTE 0, 6, 5, 4, 3 ;Tickspeed setup, subject to change through testing goes in the order red yellow blue green
 balloonHealth BYTE 1, 2, 3, 4 ; Health setup, subject to change through testing follows the order of red yellow blue greeen
@@ -49,17 +50,18 @@ tempMoney DWORD 200; Temporary until maps and towers are closer to completion
 
 balloonLooks DWORD 0
 
-	DWORD ((red SHL 4) OR white) OR  ('(' SHL 8) OR ( ')' SHL 16)
-	DWORD ((yellow SHL 4) OR black) OR  ('(' SHL 8) OR ( ')' SHL 16)
-	DWORD ((blue SHL 4) OR white) OR  ('(' SHL 8) OR ( ')' SHL 16) 
-	DWORD ((green SHL 4) OR white) OR  ('(' SHL 8) OR ( ')' SHL 16)
+	DWORD ((red SHL 4) OR white) OR  ('(' SHL 8) OR ( ')' SHL 16) ;red
+	DWORD ((yellow SHL 4) OR black) OR  ('(' SHL 8) OR ( ')' SHL 16) ;yellow
+	DWORD ((blue SHL 4) OR white) OR  ('(' SHL 8) OR ( ')' SHL 16) ;blue
+	DWORD ((green SHL 4) OR white) OR  ('(' SHL 8) OR ( ')' SHL 16) ;green
 
-leadLook DWORD ((black SHL 4) OR white) OR ('(' SHL 8) OR (')' SHL 16)
+leadLook DWORD ((black SHL 4) OR white) OR ('(' SHL 8) OR (')' SHL 16) ;black
+camoLook DWORD ((gray SHL 4) OR white) OR ('(' SHL 8) OR (')' SHL 16) ;gray 
 
 spawnTicks = 25
 spawnTimer DWORD 0
 spawnHP BYTE 1
-spawnTypes BYTE 0, 0, 0, 0, typeLead ; 0 is for normal balloons
+spawnTypes BYTE 0, 0, typeCamo, 0, typeLead ; 0 is for normal balloons
 spawnTypeIndex DWORD 0
 
 .code
@@ -378,7 +380,7 @@ findTarget PROC
 	mov targetY, dh
 	mov targetRange, bl
 
-	mov targetsHitLead, bh
+	mov targetSpecific, bh
 
 	mov esi, OFFSET BalloonsArr
 	mov ebx, 0
@@ -391,8 +393,15 @@ targetLoop:
 	je targetNext
 
 	cmp (Balloon PTR [esi]).balloonType, typeLead
+	jne targetCheckCamo
+	cmp targetSpecific, typeLead
+	jne targetNext
+
+targetCheckCamo:
+
+	cmp (Balloon PTR [esi]).balloonType, typeCamo
 	jne targetCheckRange
-	cmp targetsHitLead, 1
+	cmp targetSpecific, typeCamo
 	jne targetNext
 
 targetCheckRange:
