@@ -19,6 +19,8 @@ balloonRed = 1
 balloonYellow = 2
 balloonBlue = 3
 balloonGreen = 4
+typeLead = 1
+leadSpeed = 8
 
 Balloon STRUCT
 
@@ -50,6 +52,8 @@ balloonLooks DWORD 0
 	DWORD ((yellow SHL 4) OR black) OR  ('(' SHL 8) OR ( ')' SHL 16)
 	DWORD ((blue SHL 4) OR white) OR  ('(' SHL 8) OR ( ')' SHL 16) 
 	DWORD ((green SHL 4) OR white) OR  ('(' SHL 8) OR ( ')' SHL 16)
+
+leadLook DWORD ((black SHL 4) OR white) OR ('(' SHL 8) OR (')' SHL 16)
 
 spawnTicks = 25
 spawnTimer DWORD 0
@@ -119,6 +123,7 @@ spawnLoopFound:
 
 	mov (Balloon PTR [esi]).active,1
 	mov (Balloon PTR [esi]).hp,dl
+	mov (Balloon PTR [esi]).balloonType,ah
 	mov (Balloon PTR [esi]).moveTick,0
 	mov (Balloon PTR [esi]).balloonPathing,0
 	mov eax, ebx
@@ -265,6 +270,8 @@ balloonTick PROC
 
 	mov spawnTimer, 0
 	mov al, spawnHP
+	mov ah, 0
+
 	call SpawnBalloon
 
 	inc spawnHP
