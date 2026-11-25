@@ -37,6 +37,7 @@ Balloon ENDS
 targetX BYTE 0
 targetY BYTE 0
 targetRange BYTE 0
+targetsHitLead BYTE 0 ;Check if the tower can hit lead
 
 balloonSpeed BYTE 0, 6, 5, 4, 3 ;Tickspeed setup, subject to change through testing goes in the order red yellow blue green
 balloonHealth BYTE 1, 2, 3, 4 ; Health setup, subject to change through testing follows the order of red yellow blue greeen
@@ -193,6 +194,13 @@ moveBalloon PROC
 
 	movzx eax,(Balloon PTR [esi]).hp
 	mov dl,balloonSpeed[eax]
+
+	cmp (Balloon PTR [esi]).balloonType, typeLead
+	jne moveSpeedReady
+	mov dl, leadSpeed
+	
+	moveSpeedReady:
+
 	cmp (Balloon PTR [esi]).moveTick,dl
 	jb	moveNextBalloon
 
@@ -370,6 +378,8 @@ findTarget PROC
 	mov targetY, dh
 	mov targetRange, bl
 
+	mov targetsHitLead, bh
+
 	mov esi, OFFSET BalloonsArr
 	mov ebx, 0
 	mov ecx, maxBalloonCount
@@ -377,7 +387,15 @@ findTarget PROC
 targetLoop:
 
 	cmp (Balloon PTR [esi]).active,0
+
 	je targetNext
+
+	cmp (Balloon PTR [esi]).balloonType, typeLead
+	jne targetCheckRange
+	cmp targetsHitLead, 1
+	jne targetNext
+
+targetCheckRange:
 
 	mov eax, ebx
 	call findBalloon

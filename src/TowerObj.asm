@@ -99,6 +99,8 @@ towerReadyShoot:
 	mov dl, towerX[esi]
 	mov dh, towerY[esi]
 	mov bl, towerRange
+	mov bh, 0 ;temp until cannon is created
+
 	call findTarget
 	cmp eax, -1
 
