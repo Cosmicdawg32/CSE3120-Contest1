@@ -328,8 +328,19 @@ drawLoop:
 	imul edi, MAP_W
 	movzx eax, dl
 	add edi, eax
+
+	cmp (Balloon PTR [esi]).balloonType, typeLead
+	jne drawNormal
+	mov eax, leadLook
+	jmp drawStore
+
+drawNormal:
+
 	movzx eax, (Balloon PTR [esi]).hp
 	mov eax, balloonLooks[eax*4]
+
+drawStore:
+
 	mov overlay[edi*4], eax
 
 drawNextBalloon:
