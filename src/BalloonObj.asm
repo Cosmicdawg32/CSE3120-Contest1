@@ -340,8 +340,15 @@ drawLoop:
 	add edi, eax
 
 	cmp (Balloon PTR [esi]).balloonType, typeLead
-	jne drawNormal
+	jne drawCheckCamo
 	mov eax, leadLook
+	jmp drawStore
+
+drawCheckCamo:
+
+	cmp (Balloon PTR [esi]).balloonType, typeCamo
+	jne drawNormal
+	mov eax, camoLook ;camo is always gray
 	jmp drawStore
 
 drawNormal:
